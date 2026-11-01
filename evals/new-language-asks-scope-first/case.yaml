@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: new-language-asks-scope-first
+expected_outcome: |
+  Asks scope questions (sources, baseline sources, where SQL lives) before reading any repo; recognises there is little personal SQL so the guide leans on a cited baseline; plans a separate SQL guide and rules loader.

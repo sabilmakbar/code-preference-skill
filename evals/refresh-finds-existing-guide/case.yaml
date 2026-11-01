@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: refresh-finds-existing-guide
+expected_outcome: |
+  Finds the existing guide at ~/.claude/memory/guidelines/code-style.md, treats it as the current state, proposes renaming it to code-style-python.md, and asks scope questions instead of rewriting the guide from scratch.

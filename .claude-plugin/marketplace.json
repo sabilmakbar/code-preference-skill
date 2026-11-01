@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "code-preference-skill",
+  "description": "Distill a personal, per-language code-style guide from your own repos and industry baselines.",
+  "owner": {
+    "name": "sabilmakbar",
+    "url": "https://github.com/sabilmakbar"
+  },
+  "plugins": [
+    {
+      "name": "code-preference-skill",
+      "description": "The distill-code-style skill: build or refresh a personal code-style guide per language.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

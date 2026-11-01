@@ -1,0 +1,8 @@
+{
+  "name": "code-preference-skill",
+  "version": "0.1.0",
+  "description": "Build or update a personal code-style guide per language by distilling the user's own repos against industry baselines, resolving conflicts with the user, and wiring the result into Claude's memory.",
+  "author": {
+    "name": "sabilmakbar"
+  }
+}

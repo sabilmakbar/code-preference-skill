@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: tier-table-before-rules
+expected_outcome: |
+  Inventories the three repos through the API, shows a tier table that puts claude-session-kit low because of AI signatures, and stops for the user to confirm tiers before writing any rule.
