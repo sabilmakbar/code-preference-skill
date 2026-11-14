@@ -19,7 +19,7 @@ A run can cover several languages. Keep one guide per language so each loads onl
 | Working folder: full-provenance drafts, research, baselines | `~/Documents/coding-style-preference/` (ask if the user wants another) | No |
 | Per-language guide, provenance stripped | `~/.claude/memory/guidelines/code-style-<lang>.md` | Yes, claude-memories |
 | Scope rule, one memory for all languages | `~/.claude/memory/feedback_code_style.md` | Yes |
-| Loader, one per language | `~/.claude/rules/code-style-<lang>.md` | No |
+| Loader, one per language, generated from the guide by `scripts/sync-rules.sh` | `~/.claude/rules/code-style-<lang>.md` | No |
 | Tool config (ruff, clang-format, sqlfluff...) | the tool's user-level config path | Depends |
 
 An older guide may exist as `guidelines/code-style.md`. Read it first and treat it as the current state; propose
@@ -75,9 +75,10 @@ earlier output and a wrong inventory poisons every rule drawn from it.
    every item has a decision.
 
 9. **Wire it in.** Follow `references/wiring.md`: strip provenance with `scripts/strip-provenance.py`, update the
-   scope memory through the `memory-kit:save-memory` skill, write the rules loader, install tool config.
+   scope memory through the `memory-kit:save-memory` skill, add the language's globs to `scripts/sync-rules.sh`
+   and run it, install tool config.
    Check: the strip script exits 0 (it also fails on links and `~/` paths that do not resolve from the guide's
-   new folder), and the user gets the manual check from `references/wiring.md` for the next session.
+   new folder), and the headless-session check in `references/wiring.md` passes.
 
 10. **Commit.** Ask separately to track new files, to commit, and to push to claude-memories. Never push without
     a yes for that push.
