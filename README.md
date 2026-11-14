@@ -25,7 +25,7 @@ Add it as a plugin marketplace in `~/.claude/settings.json`:
       "source": {
         "source": "github",
         "repo": "sabilmakbar/code-preference-skill",
-        "ref": "v0.1.0"
+        "ref": "v0.2.0"
       }
     }
   }
@@ -40,13 +40,15 @@ to build or refresh a style guide for a language.
 | What | Where |
 |---|---|
 | The skill | `skills/distill-code-style/` |
+| Rules sync: rebuilds `~/.claude/rules/code-style-<lang>.md` from each guide | `scripts/sync-rules.sh` (test: `tests/sync-rules.test.sh`) |
+| Hooks that run the sync at session start and after Write or Edit | `hooks/hooks.json` |
 | Evals (case/prompt/graders per scenario) | `evals/` |
 | Full-provenance working drafts, research, baselines | kept locally per the skill's paths table, not in this repo |
 | The guide itself, provenance-stripped, per language | `claude-memories` (`guidelines/code-style-<lang>.md`) |
 
 ## Notes
 
-- This repo holds the skill and its evals only. Drafting work (full-provenance research,
+- This repo holds the skill, the rules sync and its hooks, and the evals. Drafting work (full-provenance research,
   baseline comparisons) stays local, per the skill's own "Paths" table.
 - Bump `version` in `.claude-plugin/plugin.json` and tag a release to ship an update; machines
   pick it up by bumping the `ref` in their `extraKnownMarketplaces` entry.

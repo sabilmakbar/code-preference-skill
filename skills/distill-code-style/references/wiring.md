@@ -34,30 +34,37 @@ It states:
 
 ## 3. Rules loader
 
-`~/.claude/rules/code-style-<lang>.md`:
+The plugin generates `~/.claude/rules/code-style-<lang>.md` from each guide with `scripts/sync-rules.sh`: a
+`paths:` header, then the full guide text. Its hooks run the script at session start and after every Write or
+Edit, so a guide change reaches the rules file without a manual step. Never edit the rules file; edit the guide.
 
-```markdown
----
-paths:
-  - "**/*.<ext>"
-  - "**/<build or project file>"
----
+For a new language, add its globs to the `case` in `lang_paths()` in `scripts/sync-rules.sh` (the source files
+plus the build or project file), then run the script once. A guide with no entry there makes the script exit 1
+and name the language.
 
-Follow the personal code-style guide and its scope rule (memory `feedback_code_style`):
-@~/.claude/memory/guidelines/code-style-<lang>.md
-```
+Why a copy: in a rules file, `paths:` scopes only the text written in that file. Tested 2026-11-14 with headless
+sessions:
 
-Use an import, not a symlink: the docs say a symlinked rules file that points outside the working folder can lose
-its `paths:` behaviour.
+- an `@import` in a path-scoped rules file loads at session start, whatever files the session touches;
+- a rules file that is a symlink to a file outside the rules folder did not load at all.
+
+Do not write the loader by hand with an `@import` or a symlink.
 
 ## 4. Tool config
 
-Install the user-level config the guide defines (for example `~/.config/ruff/ruff.toml`, `~/.clang-format`,
-`~/.sqlfluff`) as a symlink to the working-folder copy. Ask first: a user-level config affects every project
-without its own config.
+Put the user-level config the guide defines in `~/.claude/memory/guidelines/` (for example `ruff.toml`,
+`shellcheckrc`), so it syncs with the guide, and symlink the tool's user-level path to it (for example
+`~/.config/ruff/ruff.toml`, `~/.shellcheckrc`). Ask first: a user-level config affects every project without its
+own config.
 
-## Manual check for the next session
+## Check with headless sessions
 
-1. Start a session in a repo with a `.<ext>` file and have Claude read it.
-2. Ask whether the code-style guide for <language> is loaded. Expected: yes.
-3. In a session that never touches such a file, the guide should not appear.
+Run three `claude -p` sessions in an empty temp folder and ask each which rules from the guide it has (pick one
+rule only that guide states):
+
+1. no file read: the guide must not be in context;
+2. after reading a matching file: the guide must be in context;
+3. after reading another language's file: only that language's guide.
+
+Log the files each session reads (`--output-format stream-json --verbose`), so a yes cannot come from the session
+opening the guide itself.
